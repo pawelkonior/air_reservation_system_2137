@@ -46,6 +46,20 @@ class Flight:
 
         self.seating_plan[row][letter] = passenger
 
+    def relocate_passenger(self, seat_from, seat_to):
+        row_from, letter_from = self._parse_seat(seat_from)
+
+        if self.seating_plan[row_from][letter_from] is None:
+            raise ValueError(f"Seat from is not occupied: {seat_from}.")
+
+        row_to, letter_to = self._parse_seat(seat_to)
+
+        if self.seating_plan[row_to][letter_to] is not None:
+            raise ValueError(f"Seat to is occupied: {seat_to}.")
+
+        self.seating_plan[row_to][letter_to] = self.seating_plan[row_from][letter_from]
+        self.seating_plan[row_from][letter_from] = None
+
 
 class Airplane:
     def get_seats_no(self):
@@ -85,4 +99,5 @@ f = Flight('LO127', airbus)
 f.allocate_passenger(passenger="Lech K", seat="12C")
 f.allocate_passenger(passenger="Jarosław K", seat="12B")
 f.allocate_passenger(passenger="Paweł K", seat="12A")
+f.relocate_passenger("12A", "25G")
 pp(f.seating_plan)
