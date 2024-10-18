@@ -1,6 +1,3 @@
-from pprint import pprint as pp
-
-
 class Flight:
     def __init__(self, flight_number, airplane):
         self.airplane = airplane
@@ -77,56 +74,3 @@ class Flight:
     def print_tickets(self, printer):
         for passenger, seat in self.get_passenger_list():
             printer(passenger, seat, self.get_model(), self.flight_number)
-
-
-class Airplane:
-    def get_seats_no(self):
-        rows, seats = self.get_seating_plan()
-        return len(rows) * len(seats)
-
-
-class AirbusA380(Airplane):
-    @staticmethod
-    def get_airplane_model():
-        return "Airbus A380"
-
-    @staticmethod
-    def get_seating_plan():
-        return range(1, 26), 'ABCDEG'
-
-
-class Boeing737Max(Airplane):
-    @staticmethod
-    def get_airplane_model():
-        return "Boeing 737 Max"
-
-    @staticmethod
-    def get_seating_plan():
-        return range(1, 46), 'ABCDEGHJK'
-
-
-def card_printer(passenger, seat, airplane, flight_number):
-    message = f"| Passenger: \033[91m{passenger.title()}\033[0m, seat: {seat}, airplane: {airplane}, {flight_number} |"
-    frame = f"+{'-' * (len(message) - 2)}+"
-    empty_frame = f"|{' ' * (len(message) - 2)}|"
-
-    banner = [frame, empty_frame, message, empty_frame, frame]
-    print("\n".join(banner))
-
-
-plane = Airplane()
-airbus = AirbusA380()
-boeing = Boeing737Max()
-f = Flight('LO127', boeing)
-# print(boeing.get_seating_plan())
-# print(f.get_airline())
-# print(f.get_number())
-# print(f.get_model())
-# print(boeing.get_seats_no())
-f.allocate_passenger(passenger="Lech K", seat="12C")
-f.allocate_passenger(passenger="Jarosław K", seat="12B")
-f.allocate_passenger(passenger="Paweł K", seat="12A")
-f.relocate_passenger("12A", "25G")
-# print(f.get_empty_seat())
-# pp(f.seating_plan)
-f.print_tickets(card_printer)
